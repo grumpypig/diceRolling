@@ -3,31 +3,22 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class HeartHandler : MonoBehaviour
+public class HeartAdding : MonoBehaviour
 {
-    public Sprite[] hearts;
-    public int hn;
-    public Image[] heartPhoto;
-    public Sprite empty;
-    public List<Hearts> lHearts = new List<Hearts>();
-    public InputField set;
-    public bool switchBI;
-    public float halfHearts;
-    public int MaxHearts = 12;
-    public HeartChoices choicesH;
-    public int HeartsNumber;
-    public Text txt;
-    public addHalf isHalfH;
-    public int LastDone;
-    public bool HasBlueBlack;
-    public int BlueBlack;
-    public int RedHCount;
 
-    public enum addHalf
-    {
-        half,
-        full
-    }
+    public List<Hearts> rHearts = new List<Hearts>();
+    public List<Hearts> bHearts = new List<Hearts>();
+    public Sprite[] sHearts;
+    public int maxHearts = 12;
+    public Image[] heartList;
+    public int heartNumber;
+    public HeartChoices heartToAdd;
+    public HalfChoices halfFull;
+    public int currentHearts;
+    public int lastDone;
+    public bool Test;
+    public Text txtHeart;
+    public Text txtHalf;
 
     public enum HeartChoices
     {
@@ -35,199 +26,216 @@ public class HeartHandler : MonoBehaviour
         Black,
         Blue
     }
+    public enum HalfChoices
+    {
+        half,
+        full
+    }
     public void Awake()
     {
-        LastDone = -1;
-        isHalfH = addHalf.full;
-        choicesH = HeartChoices.Red;
+        halfFull = HalfChoices.full;
+        heartToAdd = HeartChoices.Red;
     }
-
     public void Update()
     {
-        RedHCount = -1;
-        if (lHearts.Count > 0)
-        {
-            for (int i = 0; i < lHearts.Count; i++)
-            {
-                if (lHearts[i].Number == 2 || lHearts[i].Number == 4)
-                {
-                    if (!HasBlueBlack)
-                    {
-                        HasBlueBlack = true;
-                    }
-                    BlueBlack = i;
-                }
-                else if (HasBlueBlack)
-                {
-                    if (lHearts[i].Number == 0)
-                    {
-                        RedHCount += 1;
-                    }
-                }
-            }
-            if (RedHCount == lHearts.Count-1)
-            {
-                HasBlueBlack = false;
-            }
-        }
-        if (choicesH == HeartChoices.Red)
-        {
-            HeartsNumber = 0;
-        }
-        else if (choicesH == HeartChoices.Black)
-        {
-            HeartsNumber = 4;
-        }
-        else if (choicesH == HeartChoices.Blue)
-        {
-            HeartsNumber = 2;
-        }
-        if (isHalfH == addHalf.half)
-        {
-            txt.text = "Current Heart: " + choicesH;
-            txt.text += "\nRemoving a: Half Heart";
-        }
-        else if (isHalfH == addHalf.full)
-        {
-            txt.text = "Current Heart: " + choicesH;
-            txt.text += "\nRemoving a: Full Heart";
-        }
+        currentHearts = rHearts.Count + bHearts.Count;
+        txtHalf.text = "Adding/Removing a " + halfFull + " heart";
+        txtHeart.text = "Current Heart: " + heartToAdd;
     }
 
-    public void DoHearts()
+    public void AddHeart()
     {
-        if (switchBI)
+        if (currentHearts < maxHearts)
         {
-            float.TryParse(set.text, out halfHearts);
-            if (halfHearts != 0.5f)
+            if (currentHearts > 0)
             {
-                for (float i = 0; i < halfHearts; i += 0.5f)
+                if (heartToAdd == HeartChoices.Red)
                 {
-                    if (lHearts.Count < MaxHearts)
+                   if (rHearts.Count > 0)
+                        {
+                    if (halfFull == HalfChoices.full)
                     {
-                        if (i < halfHearts && i % 1 == 0)
-                        {
-                            if (halfHearts % 1 == 0.5 && i == halfHearts - 1.5f)
+                            if (rHearts[rHearts.Count - 1].isHalf)
                             {
-
+                                Sprite interchange;
+                                rHearts[rHearts.Count - 1].isHalf = false;
+                                interchange = rHearts[rHearts.Count - 1].heart;
+                                rHearts[rHearts.Count - 1].heart = rHearts[rHearts.Count - 1].other;
+                                rHearts[rHearts.Count - 1].other = interchange;
+                                rHearts.Add(new Hearts(sHearts[heartNumber], true, sHearts[heartNumber + 1], heartNumber));
                             }
-                            else
+                            else if (!rHearts[rHearts.Count - 1].isHalf)
                             {
-                                lHearts.Add(new Hearts(hearts[HeartsNumber], false, hearts[HeartsNumber + 1], HeartsNumber));
+                                rHearts.Add(new Hearts(sHearts[heartNumber], false, sHearts[heartNumber + 1], heartNumber));
                             }
                         }
-                        if (halfHearts % 1 == 0.5 && i == halfHearts - 0.5f)
+                            else if (halfFull == HalfChoices.half)
+                            {
+                                if (rHearts[rHearts.Count - 1].isHalf)
+                                {
+                                    Sprite interchange;
+                                    rHearts[rHearts.Count - 1].isHalf = false;
+                                    interchange = rHearts[rHearts.Count - 1].heart;
+                                    rHearts[rHearts.Count - 1].heart = rHearts[rHearts.Count - 1].other;
+                                    rHearts[rHearts.Count - 1].other = interchange;
+                                }
+                                else if (!rHearts[rHearts.Count - 1].isHalf)
+                                {
+                                    rHearts.Add(new Hearts(sHearts[heartNumber], true, sHearts[heartNumber + 1], heartNumber));
+                                }
+                            }
+                   }
+                        else
                         {
-                            lHearts.Add(new Hearts(hearts[HeartsNumber], true, hearts[HeartsNumber + 1], HeartsNumber));
+                            if (halfFull == HalfChoices.full)
+                            {
+                                if (heartToAdd == HeartChoices.Red)
+                                {
+                                    rHearts.Add(new Hearts(sHearts[heartNumber], false, sHearts[heartNumber + 1], heartNumber));
+                                }
+                            }
+                            else if (halfFull == HalfChoices.half)
+                            {
+                                if (heartToAdd == HeartChoices.Red)
+                                {
+                                    rHearts.Add(new Hearts(sHearts[heartNumber], true, sHearts[heartNumber + 1], heartNumber));
+                                }
+                            }
                         }
+                    }
+                else if (heartToAdd == HeartChoices.Black || heartToAdd == HeartChoices.Blue)
+                {
+                    if (bHearts.Count > 0) {
+                    if (halfFull == HalfChoices.full)
+                    {
+                        if (bHearts[bHearts.Count - 1].isHalf)
+                        {
+                            Sprite interchange;
+                            bHearts[bHearts.Count - 1].isHalf = false;
+                            interchange = bHearts[bHearts.Count - 1].heart;
+                            bHearts[bHearts.Count - 1].heart = bHearts[bHearts.Count - 1].other;
+                            bHearts[bHearts.Count - 1].other = interchange;
+                            bHearts.Add(new Hearts(sHearts[heartNumber], true, sHearts[heartNumber + 1], heartNumber));
+                        }
+                        else if (!bHearts[bHearts.Count - 1].isHalf)
+                        {
+                            bHearts.Add(new Hearts(sHearts[heartNumber], false, sHearts[heartNumber + 1], heartNumber));
+                        }
+                    }
+                    else if (halfFull == HalfChoices.half)
+                    {
+                        if (bHearts[bHearts.Count - 1].isHalf)
+                        {
+                            Sprite interchange;
+                            bHearts[bHearts.Count - 1].isHalf = false;
+                            interchange = bHearts[bHearts.Count - 1].heart;
+                            bHearts[bHearts.Count - 1].heart = bHearts[bHearts.Count - 1].other;
+                            bHearts[bHearts.Count - 1].other = interchange;
+                        }
+                        else if (!bHearts[bHearts.Count - 1].isHalf)
+                        {
+                            bHearts.Add(new Hearts(sHearts[heartNumber], true, sHearts[heartNumber + 1], heartNumber));
+                        }
+                    }
+                }  else
+                        {
+                            if (halfFull == HalfChoices.full)
+                            {
+                                if (heartToAdd == HeartChoices.Black || heartToAdd == HeartChoices.Blue)
+                                {
+                                    bHearts.Add(new Hearts(sHearts[heartNumber], false, sHearts[heartNumber + 1], heartNumber));
+                                }
+                            }
+                            else if (halfFull == HalfChoices.half)
+                            {
+                                if (heartToAdd == HeartChoices.Black || heartToAdd == HeartChoices.Blue)
+                                {
+                                    bHearts.Add(new Hearts(sHearts[heartNumber], true, sHearts[heartNumber + 1], heartNumber));
+                                }
+                            }
+                        }
+                }
+            }else {
+                if (halfFull == HalfChoices.full)
+                {
+                    if (heartToAdd == HeartChoices.Black || heartToAdd == HeartChoices.Blue)
+                    {
+                        bHearts.Add(new Hearts(sHearts[heartNumber], false, sHearts[heartNumber + 1], heartNumber));
+                    }
+                    else if (heartToAdd == HeartChoices.Red)
+                    {
+                        rHearts.Add(new Hearts(sHearts[heartNumber], false, sHearts[heartNumber + 1], heartNumber));
+                    }
+                }
+                else if (halfFull == HalfChoices.half)
+                {
+                    if (heartToAdd == HeartChoices.Black || heartToAdd == HeartChoices.Blue)
+                    {
+                        bHearts.Add(new Hearts(sHearts[heartNumber], true, sHearts[heartNumber + 1], heartNumber));
+                    }
+                    else if (heartToAdd == HeartChoices.Red)
+                    {
+                        rHearts.Add(new Hearts(sHearts[heartNumber], true, sHearts[heartNumber + 1], heartNumber));
                     }
                 }
             }
-            else lHearts.Add(new Hearts(hearts[HeartsNumber], true, hearts[HeartsNumber + 1], HeartsNumber));
-        }
+            }
         Refresh();
-    }
+        }
     public void RemoveHeart()
     {
-        if (isHalfH == addHalf.full)
+        if (bHearts.Count > 0)
         {
-            if (HasBlueBlack)
-            {
-                lHearts.Remove(lHearts[BlueBlack]);
-            }else
-                lHearts.Remove(lHearts[lHearts.Count - 1]);
+            bHearts.Remove(bHearts[bHearts.Count - 1]);
         }
-        else if (isHalfH == addHalf.half)
-        {
-            if (HasBlueBlack)
-            {
-                if (lHearts[BlueBlack].isHalf)
-                {
-                    lHearts.Remove(lHearts[BlueBlack]);
-                }
-                else
-                {
-                    Sprite interchange;
-                    lHearts[lHearts.Count - 1].isHalf = true;
-                    interchange = lHearts[lHearts.Count - 1].heart;
-                    lHearts[lHearts.Count - 1].heart = lHearts[lHearts.Count - 1].other;
-                    lHearts[lHearts.Count - 1].other = interchange;
-                }
-            }
-            else
-            {
-                if (lHearts[lHearts.Count - 1].isHalf)
-                {
-                    lHearts.Remove(lHearts[lHearts.Count - 1]);
-                }
-                else if (!lHearts[lHearts.Count - 1].isHalf)
-                {
-                    Sprite interchange;
-                    lHearts[lHearts.Count - 1].isHalf = true;
-                    interchange = lHearts[lHearts.Count - 1].heart;
-                    lHearts[lHearts.Count - 1].heart = lHearts[lHearts.Count - 1].other;
-                    lHearts[lHearts.Count - 1].other = interchange;
-                }
-            }
-        }
-        Refresh();
+        else
+            rHearts.Remove(rHearts[rHearts.Count - 1]);
     }
+    public void Refresh()
+    {
+        lastDone = 0;
+        for (int i = 0; i < heartList.Length; i++)
+        {
+            heartList[i].sprite = sHearts[6];
+        }
+            for (int i = 0; i < rHearts.Count; i++)
+            {
+                heartList[lastDone].sprite = rHearts[i].heart;
+                lastDone += 1;
+            }
+            for (int i = 0; i < bHearts.Count; i++)
+            {
+                heartList[lastDone].sprite = bHearts[i].heart;
+                lastDone += 1;
+            }
+        }
     public void Switch()
     {
-        if (choicesH == HeartChoices.Red)
+        if (heartToAdd == HeartChoices.Red)
         {
-            choicesH = HeartChoices.Black;
-            HeartsNumber = 4;
+            heartToAdd = HeartChoices.Black;
+            heartNumber = 4;
         }
-        else if (choicesH == HeartChoices.Black)
+        else if (heartToAdd == HeartChoices.Black)
         {
-            choicesH = HeartChoices.Blue;
-            HeartsNumber = 2;
+            heartToAdd = HeartChoices.Blue;
+            heartNumber = 2;
         }
-        else if (choicesH == HeartChoices.Blue)
+        else if (heartToAdd == HeartChoices.Blue)
         {
-            choicesH = HeartChoices.Red;
-            HeartsNumber = 0;
+            heartToAdd = HeartChoices.Red;
+            heartNumber = 0;
         }
     }
     public void AddHalf()
     {
-        if (isHalfH == addHalf.full)
+        if (halfFull == HalfChoices.full)
         {
-            isHalfH = addHalf.half;
+            halfFull = HalfChoices.half;
         }
-        else if (isHalfH == addHalf.half)
+        else if (halfFull == HalfChoices.half)
         {
-            isHalfH = addHalf.full;
-        }
-    }
-    public void Refresh()
-    {
-        for (int i = 0; i < heartPhoto.Length; i++)
-        {
-            heartPhoto[i].sprite = empty;
-            LastDone = 0;
-        }
-        for (int i = 0; i < lHearts.Count; i++)
-        {//For the red hearts
-            if (lHearts[i].Number == 0 && heartPhoto[LastDone].sprite == empty)
-            {
-                heartPhoto[LastDone].sprite = lHearts[i].heart;
-                LastDone += 1;
-            }
-        }
-        for (int i = 0; i < lHearts.Count; i++)
-        {//For the both
-            if (lHearts[i].Number == 4 && heartPhoto[LastDone].sprite == empty)
-            {
-                heartPhoto[LastDone].sprite = lHearts[i].heart;
-                LastDone += 1;
-            }
-            if (lHearts[i].Number == 2 && heartPhoto[LastDone].sprite == empty)
-            {
-                heartPhoto[LastDone].sprite = lHearts[i].heart;
-                LastDone += 1;
-            }
+            halfFull = HalfChoices.full;
         }
     }
 }
