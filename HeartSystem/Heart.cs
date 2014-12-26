@@ -12,16 +12,16 @@ public class Heart
 
     public Heart(Sprite mainImg, bool half, Sprite otherImg, int heartNumber)
     {
-        isHalf = half;
-        number = heartNumber;
-        if (isHalf)
+        isHalf = half; //setting the half to local var
+        number = heartNumber; //same as ^^
+        if (isHalf) //if your half
         {
-            mainHeart = otherImg;
+            mainHeart = otherImg; //than make your main heart the half one and your other heart the full one
             otherHeart = mainImg;
         }
-        else if (!isHalf)
+        else if (!isHalf) //if your full
         {
-            mainHeart = mainImg;
+            mainHeart = mainImg; //Make your main one full and your other half.
             otherHeart = otherImg;
         }
     }
