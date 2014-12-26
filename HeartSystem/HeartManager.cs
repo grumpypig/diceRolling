@@ -3,14 +3,17 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
+//This project took ~16 hours to do so please don't just go and fork it and call it your own!!!  You can go use it without permission!!
+//But don't use it for making other videos!  If you want to extend it you can ask permission on my youtube (bit.ly/ShadowRealm)
+
 public class HeartManager : MonoBehaviour
 {
 
-    public List<Heart> rHearts = new List<Heart>();
-    public List<Heart> bHearts = new List<Heart>();
-    public Sprite[] collectionHearts;
-    public int maxHearts = 12;
-    public Image[] outputList;
+    public List<Heart> rHearts = new List<Heart>(); //An array of red hearts
+    public List<Heart> bHearts = new List<Heart>(); //An array of blue hearts
+    public Sprite[] collectionHearts; //All the hearts in an array (make sure it goes full, half, full half etc...)
+    public int maxHearts = 12; //Max hearts (heart containers)
+    public Image[] outputList; //All the heart spaces (heart containers)
     public int heartNumber;
     public int currentHearts;
     public int lastDone;
@@ -20,50 +23,48 @@ public class HeartManager : MonoBehaviour
     public HalfChoices halfFull;
     private int oldMaxHearts = 12;
 
-    public enum HeartChoices
+    public enum HeartChoices //All your choices of hearts
     {
         Red,
         Black,
         Blue
     }
-    public enum HalfChoices
+    public enum HalfChoices //The kinds of hearts you can have
     {
         half,
         full
     }
 
-    public void Awake()
+    public void Awake() //On start
     {
-        oldMaxHearts = maxHearts;
-        halfFull = HalfChoices.full;
-        heartAdd = HeartChoices.Red;
-        Refresh();
+        oldMaxHearts = maxHearts; //This is only so we can change how many heart containers you see
+        halfFull = HalfChoices.full; //Setting adding mode to half
+        heartAdd = HeartChoices.Red; //Setting adding mode to red
+        Refresh(); //Refresh screen!
     }
     public void Update()
     {
-        if (maxHearts > outputList.Length)
+        if (maxHearts > outputList.Length) //So we can't have 1000000 max hearts and only have space for 12
         {
             maxHearts = outputList.Length;
         }
-        currentHearts = rHearts.Count + bHearts.Count;
-        txtHalf.text = "Adding/Removing a " + halfFull + " heart";
-        txtHeart.text = "Current Heart: " + heartAdd;
-        if (oldMaxHearts != maxHearts)
+        currentHearts = rHearts.Count + bHearts.Count; //This is the total of hearts you have
+        txtHalf.text = "Adding/Removing a " + halfFull + " heart"; //Just setting the text to say whether or not your adding half a heart
+        txtHeart.text = "Current Heart: " + heartAdd; //Just setting the text ot say which heart your adding (red, blue, black)
+        if (oldMaxHearts != maxHearts) //If you have more/less maxhearts than you did have before just refresh and reset trap
         {
             Refresh();
             oldMaxHearts = maxHearts;
         }
     }
 
-    public void AddHeart()
+    public void AddHeart() //This is the big code :)
     {
-        if (currentHearts < maxHearts)
+        if (currentHearts < maxHearts) //If you have less hearts than max
         {
-            if (currentHearts > 0)
-            {
-                if (heartAdd == HeartChoices.Red)
+                if (heartAdd == HeartChoices.Red) //if your adding a red
                 {
-                    if (rHearts.Count > 0)
+                    if (rHearts.Count > 0) //If your red heart count is over 0
                     {
                         if (halfFull == HalfChoices.full)
                         {
@@ -163,33 +164,6 @@ public class HeartManager : MonoBehaviour
                         }
                     }
                 }
-            }
-            else
-            {
-                if (heartAdd == HeartChoices.Blue || heartAdd == HeartChoices.Black)
-                {
-                    if (halfFull == HalfChoices.full)
-                    {
-                        bHearts.Add(new Heart(collectionHearts[heartNumber], false, collectionHearts[heartNumber + 1], heartNumber));
-                    }
-                    else if (halfFull == HalfChoices.half)
-                    {
-                        bHearts.Add(new Heart(collectionHearts[heartNumber], true, collectionHearts[heartNumber + 1], heartNumber));
-                    }
-                }
-                else if (heartAdd == HeartChoices.Red)
-                {
-                    if (halfFull == HalfChoices.full)
-                    {
-                        rHearts.Add(new Heart(collectionHearts[heartNumber], false, collectionHearts[heartNumber + 1], heartNumber));
-                    }
-                    else if (halfFull == HalfChoices.half)
-                    {
-                        rHearts.Add(new Heart(collectionHearts[heartNumber], true, collectionHearts[heartNumber + 1], heartNumber));
-                    }
-                }
-
-            }
         }
         Refresh();
     }
