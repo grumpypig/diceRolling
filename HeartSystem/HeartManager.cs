@@ -66,43 +66,44 @@ public class HeartManager : MonoBehaviour
                 {
                     if (rHearts.Count > 0) //If your red heart count is over 0
                     {
-                        if (halfFull == HalfChoices.full)
+                        if (halfFull == HalfChoices.full) //If your adding a full heart
                         {
-                            if (rHearts[rHearts.Count - 1].isHalf)
+                            if (rHearts[rHearts.Count - 1].isHalf) //if your last heart is half
                             {
-                                Sprite interchange;
-                                rHearts[rHearts.Count - 1].isHalf = false;
-                                interchange = rHearts[rHearts.Count - 1].mainHeart;
-                                rHearts[rHearts.Count - 1].mainHeart = rHearts[rHearts.Count - 1].otherHeart;
-                                rHearts[rHearts.Count - 1].otherHeart = interchange;
-                                rHearts.Add(new Heart(collectionHearts[heartNumber], true, collectionHearts[heartNumber + 1], heartNumber));
+                                Sprite interchange; //creating a variable to store a sprite
+                                rHearts[rHearts.Count - 1].isHalf = false; //The half heart bool is false
+                                interchange = rHearts[rHearts.Count - 1].mainHeart; //Storing main heart sprite
+                                rHearts[rHearts.Count - 1].mainHeart = rHearts[rHearts.Count - 1].otherHeart; //main heart = other heart
+                                rHearts[rHearts.Count - 1].otherHeart = interchange; //Other heart is equal to the stored one
+                                rHearts.Add(new Heart(collectionHearts[heartNumber], true, collectionHearts[heartNumber + 1], heartNumber)); //Add another half heart
                             }
-                            else if (!rHearts[rHearts.Count - 1].isHalf)
+                            else if (!rHearts[rHearts.Count - 1].isHalf) //Else if the last one is full
                             {
-                                rHearts.Add(new Heart(collectionHearts[heartNumber], false, collectionHearts[heartNumber + 1], heartNumber));
+                                rHearts.Add(new Heart(collectionHearts[heartNumber], false, collectionHearts[heartNumber + 1], heartNumber)); //Just add a full heart
                             }
                         }
-                        else if (halfFull == HalfChoices.half)
+                        else if (halfFull == HalfChoices.half) //Else if your adding half
                         {
-                            if (rHearts[rHearts.Count - 1].isHalf)
+                            if (rHearts[rHearts.Count - 1].isHalf) //If the last one is half
                             {
+                                //Same as the one for full but not adding an extra heart just making the last one full
                                 Sprite interchange;
                                 rHearts[rHearts.Count - 1].isHalf = false;
                                 interchange = rHearts[rHearts.Count - 1].mainHeart;
                                 rHearts[rHearts.Count - 1].mainHeart = rHearts[rHearts.Count - 1].otherHeart;
                                 rHearts[rHearts.Count - 1].otherHeart = interchange;
                             }
-                            else if (!rHearts[rHearts.Count - 1].isHalf)
+                            else if (!rHearts[rHearts.Count - 1].isHalf) //If the last heart is half just add a half heart
                             {
                                 rHearts.Add(new Heart(collectionHearts[heartNumber], true, collectionHearts[heartNumber + 1], heartNumber));
                             }
                         }
                     }
-                    else
+                    else //Else if you have 0 red hearts
                     {
-                        if (heartAdd == HeartChoices.Red)
+                        if (heartAdd == HeartChoices.Red) //If you are adding a red heart
                         {
-                            if (halfFull == HalfChoices.full)
+                            if (halfFull == HalfChoices.full) //If your are adding full heart add it otherwise add a half heart
                             {
                                 rHearts.Add(new Heart(collectionHearts[heartNumber], false, collectionHearts[heartNumber + 1], heartNumber));
                             }
@@ -113,13 +114,13 @@ public class HeartManager : MonoBehaviour
                         }
                     }
                 }
-                else if (heartAdd == HeartChoices.Black || heartAdd == HeartChoices.Blue)
+                else if (heartAdd == HeartChoices.Black || heartAdd == HeartChoices.Blue) //If your adding a blue/black heart instead of a red heart
                 {
-                    if (bHearts.Count > 0)
+                    if (bHearts.Count > 0) //If you have blue hearts to avoid the weird error thing
                     {
-                        if (halfFull == HalfChoices.full)
+                        if (halfFull == HalfChoices.full) //if your adding a full heart
                         {
-                            if (bHearts[bHearts.Count - 1].isHalf)
+                            if (bHearts[bHearts.Count - 1].isHalf) //If the last one is half then do the same thing as the red hearts but for the blue/black hearts
                             {
                                 Sprite interchange;
                                 bHearts[bHearts.Count - 1].isHalf = false;
@@ -128,32 +129,33 @@ public class HeartManager : MonoBehaviour
                                 bHearts[bHearts.Count - 1].otherHeart = interchange;
                                 bHearts.Add(new Heart(collectionHearts[heartNumber], true, collectionHearts[heartNumber + 1], heartNumber));
                             }
-                            else if (!bHearts[bHearts.Count - 1].isHalf)
+                            else if (!bHearts[bHearts.Count - 1].isHalf) //If the last one is full then just add a full heart
                             {
                                 bHearts.Add(new Heart(collectionHearts[heartNumber], false, collectionHearts[heartNumber + 1], heartNumber));
                             }
                         }
-                        else if (halfFull == HalfChoices.half)
+                        else if (halfFull == HalfChoices.half) //if your adding a half heart
                         {
                             if (bHearts[bHearts.Count - 1].isHalf)
                             {
+                                //Same as the red one but for blue
                                 Sprite interchange;
                                 bHearts[bHearts.Count - 1].isHalf = false;
                                 interchange = bHearts[bHearts.Count - 1].mainHeart;
                                 bHearts[bHearts.Count - 1].mainHeart = bHearts[bHearts.Count - 1].otherHeart;
                                 bHearts[bHearts.Count - 1].otherHeart = interchange;
                             }
-                            else if (!bHearts[bHearts.Count - 1].isHalf)
+                            else if (!bHearts[bHearts.Count - 1].isHalf) //if the last one is full then add a half heart
                             {
                                 bHearts.Add(new Heart(collectionHearts[heartNumber], true, collectionHearts[heartNumber + 1], heartNumber));
                             }
                         }
                     }
-                    else
+                    else //if you have 0 blue/black hearts
                     {
-                        if (heartAdd == HeartChoices.Black || heartAdd == HeartChoices.Blue)
+                        if (heartAdd == HeartChoices.Black || heartAdd == HeartChoices.Blue) //just double check that your adding blue/black hearts
                         {
-                            if (halfFull == HalfChoices.full)
+                            if (halfFull == HalfChoices.full) //If your adding full then add a full heart otherwise add a half heart
                             {
                                 bHearts.Add(new Heart(collectionHearts[heartNumber], false, collectionHearts[heartNumber + 1], heartNumber));
                             }
@@ -165,40 +167,40 @@ public class HeartManager : MonoBehaviour
                     }
                 }
         }
-        Refresh();
+        Refresh(); //Refresh
     }
 
-    public void RemoveHeart()
+    public void RemoveHeart() //Removing a heart
     {
-        if (bHearts.Count > 0)
+        if (bHearts.Count > 0) //If your blue/black hearts is over 0 then remove them before red
         {
-            if (!bHearts[0].isHalf)
+            if (!bHearts[0].isHalf) //if the first one isn't half
             {
-                if (halfFull == HalfChoices.full)
+                if (halfFull == HalfChoices.full) //if your removing a full
                 {
-                    if (!bHearts[bHearts.Count - 1].isHalf)
+                    if (!bHearts[bHearts.Count - 1].isHalf) //if the last one is full
                     {
-                        bHearts.Remove(bHearts[bHearts.Count - 1]);
+                        bHearts.Remove(bHearts[bHearts.Count - 1]); //Remove it
                     }
-                    else if (bHearts[bHearts.Count - 1].isHalf)
+                    else if (bHearts[bHearts.Count - 1].isHalf) //Else if the last one is half
                     {
-                        bHearts.Remove(bHearts[bHearts.Count - 1]);
-                        Sprite interchange;
-                        bHearts[bHearts.Count - 1].isHalf = true;
-                        interchange = bHearts[bHearts.Count - 1].mainHeart;
+                        bHearts.Remove(bHearts[bHearts.Count - 1]); //Remove the last one
+                        Sprite interchange; //Store a var sprite
+                        bHearts[bHearts.Count - 1].isHalf = true; //Make the last one half
+                        interchange = bHearts[bHearts.Count - 1].mainHeart; //Do a switch
                         bHearts[bHearts.Count - 1].mainHeart = bHearts[bHearts.Count - 1].otherHeart;
                         bHearts[bHearts.Count - 1].otherHeart = interchange;
                     }
                 }
-                else if (halfFull == HalfChoices.half)
+                else if (halfFull == HalfChoices.half) //Else if your removing half
                 {
-                    if (bHearts[bHearts.Count - 1].isHalf)
+                    if (bHearts[bHearts.Count - 1].isHalf) //If your last one's half
                     {
-                        bHearts.Remove(bHearts[bHearts.Count - 1]);
+                        bHearts.Remove(bHearts[bHearts.Count - 1]); //Remove it
                     }
-                    else if (!bHearts[bHearts.Count - 1].isHalf)
+                    else if (!bHearts[bHearts.Count - 1].isHalf) //if you last one is full
                     {
-                        Sprite interchange;
+                        Sprite interchange; //Same as above but not removing one
                         bHearts[bHearts.Count - 1].isHalf = true;
                         interchange = bHearts[bHearts.Count - 1].mainHeart;
                         bHearts[bHearts.Count - 1].mainHeart = bHearts[bHearts.Count - 1].otherHeart;
@@ -206,24 +208,24 @@ public class HeartManager : MonoBehaviour
                     }
                 }
             }
-            else
+            else //Else if your only have 1 blue/black heart just remove it
             {
                 bHearts.Remove(bHearts[0]);
             }
         }
-        else if (rHearts.Count > 0)
+        else if (rHearts.Count > 0) //if you have no more black/blue hearts but have red ones
         {
-            if (!rHearts[0].isHalf)
+            if (!rHearts[0].isHalf) //if your first one is full
             {
-                if (halfFull == HalfChoices.full)
+                if (halfFull == HalfChoices.full) //if your removing a full
                 {
-                    if (!rHearts[rHearts.Count - 1].isHalf)
+                    if (!rHearts[rHearts.Count - 1].isHalf) //if the last one is full
                     {
-                        rHearts.Remove(rHearts[rHearts.Count - 1]);
+                        rHearts.Remove(rHearts[rHearts.Count - 1]); //Remove it
                     }
-                    else if (rHearts[rHearts.Count - 1].isHalf)
+                    else if (rHearts[rHearts.Count - 1].isHalf) //if the last one is half
                     {
-                        rHearts.Remove(rHearts[rHearts.Count - 1]);
+                        rHearts.Remove(rHearts[rHearts.Count - 1]); //Same as blue/black
                         Sprite interchange;
                         rHearts[rHearts.Count - 1].isHalf = true;
                         interchange = rHearts[rHearts.Count - 1].mainHeart;
@@ -231,14 +233,15 @@ public class HeartManager : MonoBehaviour
                         rHearts[rHearts.Count - 1].otherHeart = interchange;
                     }
                 }
-                else if (halfFull == HalfChoices.half)
+                else if (halfFull == HalfChoices.half) //Else if your removing half
                 {
-                    if (rHearts[rHearts.Count - 1].isHalf)
+                    if (rHearts[rHearts.Count - 1].isHalf) //if the last one is half
                     {
-                        rHearts.Remove(rHearts[rHearts.Count - 1]);
+                        rHearts.Remove(rHearts[rHearts.Count - 1]); //Remove it
                     }
                     else if (!rHearts[rHearts.Count - 1].isHalf)
                     {
+                        //Same as blue/black
                         Sprite interchange;
                         rHearts[rHearts.Count - 1].isHalf = true;
                         interchange = rHearts[rHearts.Count - 1].mainHeart;
@@ -249,33 +252,33 @@ public class HeartManager : MonoBehaviour
             }
             else
             {
-                rHearts.Remove(rHearts[0]);
+                rHearts.Remove(rHearts[0]); //Else just remove the first one
             }
         }
-        Refresh();
+        Refresh(); //Refresh
     }
 
     public void Refresh()
     {
-        lastDone = 0;
-        for (int i = 0; i < outputList.Length; i++)
+        lastDone = 0; //Last done is so we now which one has been done so when we go from red to blue we don't start again at 0
+        for (int i = 0; i < outputList.Length; i++) //Just setting all the hearts to default and white (we clear those that we don't want)
         {
             outputList[i].sprite = collectionHearts[6];
             outputList[i].color = Color.white;
         }
-        for (int i = 0; i < rHearts.Count; i++)
+        for (int i = 0; i < rHearts.Count; i++) //Doing red hearts first this is why we have last done so when we go back to blue/black
         {
             outputList[lastDone].sprite = rHearts[i].mainHeart;
             lastDone += 1;
         }
-        for (int i = 0; i < bHearts.Count; i++)
+        for (int i = 0; i < bHearts.Count; i++) //Last done shows its magic here so we don't need to keep track on what red hearts have been done
         {
             outputList[lastDone].sprite = bHearts[i].mainHeart;
             lastDone += 1;
         }
-        for (int i = 0; i < outputList.Length; i++)
+        for (int i = 0; i < outputList.Length; i++) //Just going through all our hearts
         {
-            if (i >= maxHearts)
+            if (i >= maxHearts) //if i is greater than max hearts basically if we have 10 max hearts if we have 12 hearts spaces we want to make them null and clear
             {
                 outputList[i].sprite = null;
                 outputList[i].color = Color.clear;
@@ -284,7 +287,7 @@ public class HeartManager : MonoBehaviour
 
     }
 
-    public void SwitchHeartMode()
+    public void SwitchHeartMode() //For switching heart modes (red to black to blue)
     {
         switch (heartAdd)
         {
@@ -302,7 +305,7 @@ public class HeartManager : MonoBehaviour
                 break;
         }
     }
-    public void AddHalf()
+    public void AddHalf() //For switching halffull modes (full to half vice versa)
     {
         switch (halfFull)
         {
@@ -314,18 +317,19 @@ public class HeartManager : MonoBehaviour
                 break;
         }
     }
+    //This code is just for games that say remove 8 hearts or add 2 hearts
     public void RemoveAddHearts(int number, HalfChoices hF, int howManyTimes, bool removeAdd, HeartChoices hC) //False is remove, true is add
     {
-        heartAdd = hC;
-        halfFull = hF;
-        heartNumber = number;
-        for (int i = 0; i < howManyTimes; i++)
+        heartAdd = hC; //We set the heart adding mode to the local var
+        halfFull = hF; //Same for half full ^^
+        heartNumber = number; //Setting our heart number to local var
+        for (int i = 0; i < howManyTimes; i++) //How many times is like 3 for 3 hearts and so on
         {
-            if (!removeAdd)
+            if (!removeAdd) //If your removing (false is remove) remove a heart
             {
                 RemoveHeart();
             }
-            else if (removeAdd)
+            else if (removeAdd) //if your adding (true is adding) add a heart
             {
                 AddHeart();
             }
